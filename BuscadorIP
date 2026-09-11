@@ -1,0 +1,27 @@
+package com.r1ng0x;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+public class BuscadorIP extends BuscadorAPI {
+
+    @Override
+    public void exibirRelatorio(String ip) {
+        System.out.println("Buscando dados do IP "+ ip + "...");
+
+        String url = "http://ip-api.com./json/" + ip;
+        String jsonResposta = fazerRequisicao(url);
+        System.out.println("DEBUG - Resposta Bruta: "+ jsonResposta);
+        JsonObject dados = JsonParser.parseString(jsonResposta).getAsJsonObject();
+
+        if(dados.get("status").getAsString().equals("success")) {
+            String pais = dados.get("country").getAsString();
+            String provedor = dados.get("isp").getAsString();
+            System.out.println("[+] País "+pais);
+            System.out.println("[+] Provedor (ISP): "+provedor);
+        } else {
+            System.out.println("[-] Falha ao encontrar dados para este IP");
+        }
+
+        }
+    }
+
+
